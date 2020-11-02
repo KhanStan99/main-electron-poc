@@ -1,0 +1,68 @@
+{
+  "name": "app-ursa",
+  "version": "0.0.1",
+  "description": "UrsaSpotter Design and Control Software Desktop Version",
+  "author": "Thermo Fisher Scientifc",
+  "main": "electron/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KhanStan99/main-electron-poc.git"
+  },
+  "scripts": {
+    "dev": "electron ./electron",
+    "start": "npm run dev",    
+    "build": "electron-builder build --win --publish never",
+    "deploy": "electron-builder build --win --publish always",
+    "build-server": "node build/build-server.js",
+    "build-installer": "node build/build-installer.js",
+    "clean": "rimraf dist"
+  },
+  "private": true,
+  "build": {
+    "appId": "com.thermofisher.app-citius-eui",
+    "productName": "eUI",
+    "copyright": "Copyright © 2020 Thermo Fisher Scientific",
+    "nsis": {
+      "oneClick": false,
+      "perMachine": true,
+      "allowToChangeInstallationDirectory": true
+    },
+    "asar": true,
+    "files": [
+      "!database/*",
+      "!server/*",
+      "!ui/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "requestedExecutionLevel": "requireAdministrator"
+    },
+    "extraFiles": [
+      {
+        "from": "server/EpcApiService/bin/release/netcoreapp2.1/win10-x64/publish/"
+      },
+      {
+        "from": "ui/dist/",
+        "to": "wwwroot/"
+      },
+      {
+        "from": "../instrument-control/instrument-server/Thermo.CTC.InstrumentServer/bin/Release",
+        "to": "instrument-server/"
+      }
+    ]
+  },
+  "devDependencies": {
+    "electron": "^2.0.18",
+    "electron-builder": "^20.28.3",
+    "npm-run-all": "^4.1.3",
+    "rimraf": "^2.6.2",
+    "shelljs": "^0.8.2"
+  },
+  "dependencies": {
+    "axios": "^0.18.0",
+    "electron-is-dev": "^0.3.0",
+    "electron-log": "^2.2.17",
+    "find-free-port": "^2.0.0",
+    "tree-kill-sync": "^1.0.0"
+  }
+}
